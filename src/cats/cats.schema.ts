@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Comments } from 'src/comments/comments.schema';
 
 const options: SchemaOptions = {
   timestamps: true,
@@ -60,17 +61,32 @@ export class Cat extends Document {
     email: string;
     name: string;
     imgUrl: string;
+    // commentsList: Comments[];
   };
+
+  readonly commentsList: Comments[];
+
 }
 
-export const CatSchema = SchemaFactory.createForClass(Cat);
+const _CatSchema = SchemaFactory.createForClass(Cat);
 
 // to prevent direct exposure of password:
-CatSchema.virtual('readOnlyData').get(function (this: Cat) {
+_CatSchema.virtual('readOnlyData').get(function (this: Cat) {
   return {
     id: this.id,
     email: this.email,
     name: this.name,
     imgUrl: this.imgUrl,
+    comments: this.commentsList,
   };
 });
+
+_CatSchema.virtual('commentsList', {
+  ref: 'comments',
+  localField: '_id',
+  foreignField: 'info',
+});
+_CatSchema.set('toObject', { virtuals: true });
+_CatSchema.set('toJSON', { virtuals: true });
+
+export const CatSchema = _CatSchema;

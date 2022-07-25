@@ -81,6 +81,4 @@ export class CatsController {
   getAllCat() {
     return this.catsService.getAllCat();
   }
-
-  
 }

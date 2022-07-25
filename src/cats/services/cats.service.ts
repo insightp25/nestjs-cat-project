@@ -1,14 +1,19 @@
+import { InjectModel } from '@nestjs/mongoose';
 import { CatsRepository } from '../cats.repository';
 import { Injectable, UnauthorizedException, HttpException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cat } from '../cats.schema';
 import * as bcrypt from 'bcrypt';
 import { CatRequestDto } from '../dto/cats.request.dto';
+import { Comments } from 'src/comments/comments.schema';
 
 @Injectable()
 export class CatsService {
-  constructor(private readonly catsRepository: CatsRepository) {}
+  constructor(
+    private readonly catsRepository: CatsRepository,
+    // @InjectModel(Cat.name) private readonly cats: Model<Cat>, //from stackoverflow
+    // @InjectModel(Comments.name) private readonly comments: Model<Comments>, //same as above
+  ) {}
 
   async signUp(body: CatRequestDto) {
     const { email, name, password } = body;
@@ -36,6 +41,7 @@ export class CatsService {
     const newCat = await this.catsRepository.findByIdAndUpdateImg(
       cat.id,
       fileName,
+      
     );
     console.log(newCat);
     return newCat;
@@ -44,7 +50,8 @@ export class CatsService {
 
   async getAllCat() {
     const allCat = await this.catsRepository.findAll();
-    const readOnlyCats = allCat.map((cat) => cat.readOnlyData );
+    // return allCat;
+    const readOnlyCats = allCat.map((cat) => cat.readOnlyData);
     return readOnlyCats;
   }
 
