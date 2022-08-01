@@ -1,5 +1,7 @@
 # 고양이의, 고양이에 의한, 고양이를 위한 커뮤니티 웹애플리케이션
 
+![Screen Shot 2022-08-01 at 3 36 06 PM](https://user-images.githubusercontent.com/71416000/182086918-0e23a205-b9b9-42c3-9e12-d3734db98703.jpg)
+
 ### 주요기능
 1. 회원가입
 2. 로그인/로그아웃
